@@ -1,0 +1,22 @@
+---
+
+- name: Firewall settings for quaerere-arangodb
+  firewalld:
+    port: 8529/tcp
+    permanent: yes
+    state: enabled
+
+- name: Unit file for quaerere-arangodb.service
+  template:
+    dest: /usr/lib/systemd/system/quaerere-arangodb.service
+    mode: 0644
+    owner: root
+    group: root
+    src: templates/quaerere-arangodb.service
+
+- name: Start and enable quaerere-arangodb.service
+  systemd:
+    name: quaerere-arangodb.service
+    enabled: yes
+    state: started
+    daemon_reload: yes

@@ -1,0 +1,27 @@
+[Unit]
+Description=ArangoDB for QuaerereProject
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+SyslogIdentifier=%p
+Restart=always
+ExecStartPre=-/usr/bin/docker kill %p
+ExecStartPre=-/usr/bin/docker rm %p
+ExecStartPre=/usr/bin/docker pull {{ quaerere_arangodb_image }}
+ExecStartPre=/usr/bin/docker create \
+          --name=%p \
+          --net=host \
+          --memory=8G \
+          --cap-add SYS_NICE \
+          --user={{ quaerere_arangodb_user_uid }} \
+          --env-file={{ quaerere_arangodb_secrets }} \
+          --volume={{ quaerere_arangodb_data }}:/var/lib/arangodb3 \
+          --volume={{ quaerere_arangodb_appdata }}:/var/lib/arangodb3-apps \
+          {{ quaerere_arangodb_image }}
+ExecStart=/usr/bin/docker start -a %p
+ExecStop=/usr/bin/docker stop %p
+
+[Install]
+WantedBy=multi-user.target
