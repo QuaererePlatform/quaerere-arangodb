@@ -1,2 +1,2 @@
-FROM arangodb:3.4
+FROM arangodb:3.6
 COPY setup_db.js /docker-entrypoint-initdb.d/
