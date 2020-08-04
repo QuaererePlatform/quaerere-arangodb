@@ -25,6 +25,6 @@ users = [
 ];
 
 console.info("Performing initial setup");
-console.info("db_name: %s, db_user: %s, db_passwd: %s",
+console.debug("db_name: %s, db_user: %s, db_passwd: %s",
     quaerereDBName, quaerereDBUser, quaerereDBPassword);
 db._createDatabase(quaerereDBName, options, users);
